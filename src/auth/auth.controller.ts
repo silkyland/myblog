@@ -3,7 +3,6 @@ import {
   Controller,
   Post,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -11,33 +10,35 @@ import { User } from '@prisma/client';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { kDefaultAvatarUrl } from './../helpers/constant';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './local-auth.guard';
+import { LoginUserDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
-  public async login(@Body() user: User): Promise<string> {
+  // @UseGuards(LocalAuthGuard)
+  public async login(@Body() user: LoginUserDto): Promise<string> {
     return this.authService.login(user);
   }
 
-  @UseGuards(LocalAuthGuard)
   @Post('register')
+  // @UseGuards(LocalAuthGuard)
   @UseInterceptors(FileInterceptor('avatar', { dest: './uploads/avatar' }))
   public async register(
     @Body() input: CreateUserDto,
     @UploadedFile() avatar: Express.Multer.File,
   ): Promise<string> {
-    return this.authService.register({
+    const inputUser = {
       ...input,
       avatar: avatar ? `avatar/${avatar.filename}` : kDefaultAvatarUrl,
       id: '',
       role: 'user',
+      confirmPassword: undefined,
       createdAt: undefined,
       updatedAt: undefined,
-    });
+    };
+    return this.authService.register(inputUser);
   }
 
   private async validate(

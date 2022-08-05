@@ -1,3 +1,4 @@
+import { LoginUserDto } from './dto/login.dto';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma, User } from '@prisma/client';
@@ -23,7 +24,7 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User): Promise<string> {
+  async login(user: LoginUserDto): Promise<string> {
     try {
       const foundUser = await this.db.user.findUnique({
         where: { email: user.email },
@@ -42,7 +43,7 @@ export class AuthService {
           HttpStatus.UNAUTHORIZED,
         );
       }
-      const payload = { email: user.email, sub: user.id };
+      const payload = { email: user.email, sub: foundUser.id };
       return this.jwtService.sign(payload);
     } catch (error) {
       throw error;
@@ -73,5 +74,10 @@ export class AuthService {
       }
       throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  // logout
+  async logout(): Promise<void> {
+    return;
   }
 }
