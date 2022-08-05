@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from '@prisma/client';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { kDefaultAvatarUrl } from './../helpers/constant';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -16,6 +17,7 @@ import { LocalAuthGuard } from './local-auth.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @UseGuards(LocalAuthGuard)
   @Post('login')
   public async login(@Body() user: User): Promise<string> {
     return this.authService.login(user);
@@ -25,12 +27,16 @@ export class AuthController {
   @Post('register')
   @UseInterceptors(FileInterceptor('avatar', { dest: './uploads/avatar' }))
   public async register(
-    @Body() input: User,
+    @Body() input: CreateUserDto,
     @UploadedFile() avatar: Express.Multer.File,
   ): Promise<string> {
     return this.authService.register({
       ...input,
-      avatar: avatar ? avatar.filename : kDefaultAvatarUrl,
+      avatar: avatar ? `avatar/${avatar.filename}` : kDefaultAvatarUrl,
+      id: '',
+      role: 'user',
+      createdAt: undefined,
+      updatedAt: undefined,
     });
   }
 

@@ -62,7 +62,7 @@ export class AuthService {
         email: newUser.email,
         sub: newUser.id,
       });
-    } catch (e) {
+    } catch (e: any) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
           throw new HttpException(
@@ -71,7 +71,7 @@ export class AuthService {
           );
         }
       }
-      throw e;
+      throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

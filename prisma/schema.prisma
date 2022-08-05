@@ -10,6 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator nestjsDto {
+  provider                        = "prisma-generator-nestjs-dto"
+  output                          = "../src"
+  outputToNestJsResourceStructure = "true"
+}
+
 model User {
   id        String   @id @default(cuid())
   avatar    String   @default("https://via.placeholder.com/300/09f/fff.png")
