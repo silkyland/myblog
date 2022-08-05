@@ -1,3 +1,5 @@
-export class ConnectPageDto {
-  id: string;
-}
+
+  export class ConnectPageDto {
+    id: string;
+  }
+  

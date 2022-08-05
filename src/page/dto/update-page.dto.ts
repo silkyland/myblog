@@ -1,5 +1,11 @@
+
+
+
+
+
+
 export class UpdatePageDto {
   title?: string;
-  content?: string;
-  thumbnail?: string;
+content?: string;
+thumbnail?: string;
 }
