@@ -3,7 +3,7 @@ import {Category} from '../../category/entities/category.entity'
 import {User} from '../../user/entities/user.entity'
 
 
-export class Post {
+export class Article {
   id: string ;
 title: string ;
 content: string ;

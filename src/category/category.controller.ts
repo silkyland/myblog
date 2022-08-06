@@ -16,6 +16,7 @@ export class CategoryController {
   }
   @Post('create')
   createCategory(@Body() category: Category): Promise<Category> {
+    console.log(category);
     return this.categoryService.createCategory(category);
   }
   @Patch('update')

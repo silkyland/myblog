@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
@@ -16,38 +17,61 @@ import { BannerService } from './banner.service';
 @Controller('banner')
 export class BannerController {
   constructor(private readonly bannerService: BannerService) {}
-  @Post('banner')
-  banner(){}
+  @Get('banner')
+  banner(@Body('id') id: string):Promise<Banner>{
+    return this.bannerService.getBannerById(id);
+  }
+  @Get('banners')
+  banners():Promise<Banner[]>{
+    return this.bannerService.getBanners();
+  }
 
   @Post('create')
   @UseInterceptors(
-    FileInterceptor('file', {
-      dest: './upload/banner',
+    FileInterceptor('thumbnail', {
+      storage: diskStorage({
+        destination: './upload/banner',
+        filename(req, file, callback) {
+          const randomName = Array(32)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join('');
+          callback(null, `${randomName}${extname(file.originalname)}`);
+        },
+      }),
     }),
   )
   createBanner(
     @Body() banner: Banner,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() thumbnail: Express.Multer.File,
   ): Promise<Banner> {
-    console.log(file);
-    let newBanner = file
-      ? { ...banner, url: `upload/banner/${file.filename}` }
+    let newBanner = thumbnail
+      ? { ...banner, thumbnail: `banner/${thumbnail.filename}` }
       : banner;
     return this.bannerService.createBanner({ ...newBanner });
   }
 
   @Patch('update')
   @UseInterceptors(
-    FileInterceptor('file', {
-      dest: './upload/banner',
+    FileInterceptor('thumbnail', {
+      storage: diskStorage({
+        destination: './upload/banner',
+        filename(req, file, callback) {
+          const randomName = Array(32)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join('');
+          callback(null, `${randomName}${extname(file.originalname)}`);
+        },
+      }),
     }),
   )
   updateBanner(
     @Body() banner: Banner,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() thumbnail: Express.Multer.File,
   ): Promise<Banner> {
-    let newBanner = file
-      ? { ...banner, url: `upload/banner/${file.filename}` }
+    let newBanner = thumbnail
+      ? { ...banner, url: `banner/${thumbnail.filename}` }
       : banner;
     return this.bannerService.updateBanner(newBanner);
   }

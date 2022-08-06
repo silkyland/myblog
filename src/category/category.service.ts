@@ -27,7 +27,7 @@ export class CategoryService {
     try {
       return await this.db.category.create({ data: category });
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   }
   async updateCategory(category: Category): Promise<Category> {

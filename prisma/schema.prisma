@@ -17,20 +17,20 @@ datasource db {
 // }
 
 model User {
-  id        String   @id @default(cuid())
-  avatar    String   @default("https://via.placeholder.com/300/09f/fff.png")
-  email     String   @unique
+  id        String    @id @default(cuid())
+  avatar    String    @default("https://via.placeholder.com/300/09f/fff.png")
+  email     String    @unique
   password  String
   name      String
-  role      String   @default("user")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  posts     Post[]
+  role      String    @default("user")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  article   Article[]
   Banner    Banner[]
   Page      Page[]
 }
 
-model Post {
+model Article {
   id         String   @id @default(cuid())
   title      String
   content    String
@@ -44,11 +44,12 @@ model Post {
 }
 
 model Category {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  posts     Post[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  article   Article[]
+  Banner    Banner[]
 }
 
 model Banner {
@@ -62,6 +63,7 @@ model Banner {
   order      Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
 }
 
