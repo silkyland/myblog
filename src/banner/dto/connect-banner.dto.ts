@@ -1,5 +1,6 @@
+import { IsNotEmpty } from "class-validator";
 
-  export class ConnectBannerDto {
-    id: string;
-  }
-  
+export class ConnectBannerDto {
+  @IsNotEmpty()
+  id: string;
+}

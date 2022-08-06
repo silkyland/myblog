@@ -1,7 +1,7 @@
 
-import {Post} from '../../post/entities/post.entity'
 import {Banner} from '../../banner/entities/banner.entity'
 import {Page} from '../../page/entities/page.entity'
+import { Article } from '@prisma/client';
 
 
 export class User {
@@ -13,7 +13,7 @@ name: string ;
 role: string ;
 createdAt: Date ;
 updatedAt: Date ;
-posts?: Post[] ;
+article?: Article[] ;
 Banner?: Banner[] ;
 Page?: Page[] ;
 }

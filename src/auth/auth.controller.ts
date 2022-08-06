@@ -24,7 +24,7 @@ export class AuthController {
 
   @Post('register')
   // @UseGuards(LocalAuthGuard)
-  @UseInterceptors(FileInterceptor('avatar', { dest: './uploads/avatar' }))
+  @UseInterceptors(FileInterceptor('avatar', { dest: './upload/avatar' }))
   public async register(
     @Body() input: CreateUserDto,
     @UploadedFile() avatar: Express.Multer.File,
@@ -34,9 +34,9 @@ export class AuthController {
       avatar: avatar ? `avatar/${avatar.filename}` : kDefaultAvatarUrl,
       id: '',
       role: 'user',
-      confirmPassword: undefined,
       createdAt: undefined,
       updatedAt: undefined,
+      confirmPassword: undefined,
     };
     return this.authService.register(inputUser);
   }

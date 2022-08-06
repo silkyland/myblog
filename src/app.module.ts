@@ -4,15 +4,12 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { BannerModule } from './banner/banner.module';
-import { PostModule } from './post/post.module';
 import { PageModule } from './page/page.module';
 import { CategoryModule } from './category/category.module';
 import { PrismaService } from './prisma/prisma.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ArticleModule } from './article/article.module';
-
-
 
 @Module({
   imports: [
@@ -22,7 +19,6 @@ import { ArticleModule } from './article/article.module';
     AuthModule,
     UserModule,
     BannerModule,
-    PostModule,
     PageModule,
     CategoryModule,
     ArticleModule,

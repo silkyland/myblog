@@ -1,5 +1,5 @@
 
-import {Post} from '../../post/entities/post.entity'
+import { Article } from '@prisma/client';
 
 
 export class Category {
@@ -7,5 +7,5 @@ export class Category {
 name: string ;
 createdAt: Date ;
 updatedAt: Date ;
-posts?: Post[] ;
+article?: Article[] ;
 }

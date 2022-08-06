@@ -52,13 +52,12 @@ export class AuthService {
 
   async register(user: User): Promise<string> {
     try {
-      const newUser = await this.db.user.create({
+      let newUser = await this.db.user.create({
         data: {
           ...user,
           password: hashSync(user.password, 10),
         },
       });
-
       return await this.jwtService.sign({
         email: newUser.email,
         sub: newUser.id,
