@@ -15,7 +15,7 @@ export class ArticleController {
         return this.articleService.updateArticle(article);
     }
     @Delete('delete')
-    deleteArticle(@Body() article: Article){
-        return this.articleService.deleteArticle(article);
+    deleteArticle(@Body() id: string){
+        return this.articleService.deleteArticle(id);
     }
 }

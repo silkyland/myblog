@@ -1,11 +1,9 @@
-
-import {Post} from '../../post/entities/post.entity'
-
+import { Article } from './../../article/entities/article.entity';
 
 export class Category {
-  id: string ;
-name: string ;
-createdAt: Date ;
-updatedAt: Date ;
-posts?: Post[] ;
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  articles?: Article[];
 }
