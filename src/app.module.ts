@@ -9,7 +9,6 @@ import { CategoryModule } from './category/category.module';
 import { PrismaService } from './prisma/prisma.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { ArticleModule } from './article/article.module';
 
 @Module({
   imports: [
@@ -21,7 +20,6 @@ import { ArticleModule } from './article/article.module';
     BannerModule,
     PageModule,
     CategoryModule,
-    ArticleModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

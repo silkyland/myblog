@@ -37,7 +37,7 @@ model Article {
   category   Category @relation(fields: [categoryId], references: [id])
   author     User     @relation(fields: [authorId], references: [id])
   authorId   String
-  thumbnail  String
+  thumbnail  String? @default("https://via.placeholder.com/300/09f/fff.png")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   categoryId String

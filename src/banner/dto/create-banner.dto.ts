@@ -1,4 +1,5 @@
-import { IsString, MinLength } from "class-validator";
+import { IsOptional, IsString, MinLength } from 'class-validator';
+import { IsFile } from 'src/helpers/custom-decorator';
 
 export class CreateBannerDto {
   @IsString()
@@ -10,7 +11,7 @@ export class CreateBannerDto {
   content: string;
 
   @IsOptional()
-  @IsFile()
+  @IsFile({ mime: ['image/jpeg', 'image/png', 'image/jpg'] })
   thumbnail: string;
   link: string;
   order: number;
