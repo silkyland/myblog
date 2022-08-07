@@ -1,3 +1,11 @@
+import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+
 export class UpdateCategoryDto {
-  name?: string;
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsString()
+  @MinLength(5)
+  name: string;
 }

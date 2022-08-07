@@ -13,11 +13,13 @@ import * as bcrypt from 'bcrypt';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { diskStorage } from 'multer';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  
+
   @Get('user')
   user(@Param('id') id: string): Promise<User> {
     return this.userService.getUserById(id);
@@ -43,16 +45,18 @@ export class UserController {
     }),
   )
   createUser(
-    @Body() user: User,
+    @Body() user: CreateUserDto,
     @UploadedFile() avatar: Express.Multer.File,
   ): Promise<User> {
     const securePassword = bcrypt.hashSync(user.password, 10);
-    let newUser = avatar
-      ? { ...user, avatar: `avatar/${avatar.filename}` }
-      : user;
     return this.userService.createUser({
-      ...newUser,
+      ...user,
+      id: undefined,
+      role: undefined,
+      avatar: `avatar/${avatar.filename}`,
       password: securePassword,
+      createdAt: undefined,
+      updatedAt: undefined,
     });
   }
   @Post('update')
@@ -71,7 +75,7 @@ export class UserController {
     }),
   )
   updateUser(
-    @Body() user: User,
+    @Body() user: UpdateUserDto,
     @UploadedFile() avatar: Express.Multer.File,
   ): Promise<User> {
     const securePassword = bcrypt.hashSync(user.password, 10);
@@ -79,8 +83,12 @@ export class UserController {
       ? { ...user, avatar: `avatar/${avatar.filename}` }
       : user;
     return this.userService.updateUser({
-      ...newUser,
+      ...user,
+      role: undefined,
+      avatar: `avatar/${avatar.filename}`,
       password: securePassword,
+      createdAt: undefined,
+      updatedAt: undefined,
     });
   }
   @Post('delete')

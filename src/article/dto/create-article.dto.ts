@@ -7,7 +7,7 @@ export class CreateArticleDto {
   title: string;
 
   @IsString()
-  @MinLength(10)
+  @MinLength(3)
   content: string;
 
   @IsOptional()

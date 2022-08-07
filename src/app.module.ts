@@ -9,12 +9,14 @@ import { CategoryModule } from './category/category.module';
 import { PrismaService } from './prisma/prisma.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ArticleModule } from './article/article.module';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'),
+      rootPath: join(__dirname, '..', 'upload'),
     }),
+    ArticleModule,
     AuthModule,
     UserModule,
     BannerModule,

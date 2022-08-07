@@ -13,6 +13,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Page } from '@prisma/client';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { CreatePageDto } from './dto/create-page.dto';
+import { UpdatePageDto } from './dto/update-page.dto';
 import { PageService } from './page.service';
 
 @Controller('page')
@@ -20,11 +22,11 @@ export class PageController {
   constructor(private readonly pageService: PageService) {}
 
   @Get('page')
-  page(@Body('id') id: string):Promise<Page>{
+  page(@Body('id') id: string): Promise<Page> {
     return this.pageService.getPage(id);
   }
   @Get('pages')
-  pages():Promise<Page[]>{
+  pages(): Promise<Page[]> {
     return this.pageService.getPages();
   }
 
@@ -44,13 +46,16 @@ export class PageController {
     }),
   )
   createPage(
-    @Body() page: Page,
+    @Body() page: CreatePageDto,
     @UploadedFile() thumbnail: Express.Multer.File,
   ): Promise<Page> {
-    let newPage = thumbnail
-      ? { ...page, thumbnail: `page/${thumbnail.filename}` }
-      : page;
-    return this.pageService.createPage(newPage);
+    return this.pageService.createPage({
+      ...page,
+      id: undefined,
+      thumbnail: `page/${thumbnail.filename}`,
+      createdAt: undefined,
+      updatedAt: undefined,
+    });
   }
   @Patch('update')
   @UseInterceptors(
@@ -68,13 +73,16 @@ export class PageController {
     }),
   )
   updatePage(
-    @Body() page: Page,
+    @Body() page: UpdatePageDto,
     @UploadedFile() thumbnail: Express.Multer.File,
   ): Promise<Page> {
-    let newPage = thumbnail
-      ? { ...page, thumbnail: `page/${thumbnail.filename}` }
-      : page;
-    return this.pageService.updatePage(page);
+    return this.pageService.updatePage({
+      ...page,
+      id: undefined,
+      thumbnail: `page/${thumbnail.filename}`,
+      createdAt: undefined,
+      updatedAt: undefined,
+    });
   }
   @Delete('delete')
   deletePage(@Param() id: string): Promise<boolean> {

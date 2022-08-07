@@ -13,16 +13,18 @@ import { Banner } from '@prisma/client';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { BannerService } from './banner.service';
+import { CreateBannerDto } from './dto/create-banner.dto';
+import { UpdateBannerDto } from './dto/update-banner.dto';
 
 @Controller('banner')
 export class BannerController {
   constructor(private readonly bannerService: BannerService) {}
   @Get('banner')
-  banner(@Body('id') id: string):Promise<Banner>{
+  banner(@Body('id') id: string): Promise<Banner> {
     return this.bannerService.getBannerById(id);
   }
   @Get('banners')
-  banners():Promise<Banner[]>{
+  banners(): Promise<Banner[]> {
     return this.bannerService.getBanners();
   }
 
@@ -42,13 +44,16 @@ export class BannerController {
     }),
   )
   createBanner(
-    @Body() banner: Banner,
+    @Body() banner: CreateBannerDto,
     @UploadedFile() thumbnail: Express.Multer.File,
   ): Promise<Banner> {
-    let newBanner = thumbnail
-      ? { ...banner, thumbnail: `banner/${thumbnail.filename}` }
-      : banner;
-    return this.bannerService.createBanner({ ...newBanner });
+    return this.bannerService.createBanner({
+      ...banner,
+      id: undefined,
+      thumbnail: `banner/${thumbnail.filename}`,
+      createdAt: undefined,
+      updatedAt: undefined,
+    });
   }
 
   @Patch('update')
@@ -67,15 +72,17 @@ export class BannerController {
     }),
   )
   updateBanner(
-    @Body() banner: Banner,
+    @Body() banner: UpdateBannerDto,
     @UploadedFile() thumbnail: Express.Multer.File,
   ): Promise<Banner> {
-    let newBanner = thumbnail
-      ? { ...banner, url: `banner/${thumbnail.filename}` }
-      : banner;
-    return this.bannerService.updateBanner(newBanner);
+    return this.bannerService.updateBanner({
+      ...banner,
+      thumbnail: `banner/${thumbnail.filename}`,
+      createdAt: undefined,
+      updatedAt: undefined,
+    });
   }
-  @Post('delete') 
+  @Post('delete')
   deleteBanner(@Param('id') id: string): Promise<boolean> {
     const banner = this.bannerService.deleteBanner(id);
     return banner;
